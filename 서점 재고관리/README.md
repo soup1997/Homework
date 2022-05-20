@@ -7,6 +7,6 @@
 6. 재고에 있는 전체 서적의 재고 숫자 출력
 7. 재고에 있는 서적들에 대한 전체 가격 출력
 
-다음과 같은 자료구조를 가지고 있음(LinkedList)
+다음과 같은 자료구조를 가지고 있음(LinkedList)  
 ![image](https://user-images.githubusercontent.com/86957779/169465694-48de1729-01d9-4c9f-a730-0e6965aca0b7.png)
 
