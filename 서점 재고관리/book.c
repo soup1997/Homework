@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-//displayInventory(Inven) ±¸Çö X
+//displayInventory(Inven) êµ¬í˜„ X
 
 #include <stdio.h>
 #include <string.h>
@@ -8,36 +8,36 @@
 #include <memory.h>
 #include <ctype.h>
 
-int flag = 0, choice = 0, i = 0; // ÆÄÀÏ ÀĞ±â ¼º°ø¿©ºÎ ÇÃ·¡±×, ÇÁ·Î±×·¥ µ¿ÀÛ choiceº¯¼ö, ±¸Á¶Ã¼ ¹è¿­¿¡ Á¢±ÙÇÏ±â À§ÇÑ ÀÎµ¦½º º¯¼ö
-char file_name[20] = { 0, }; // ÆÄÀÏ ÀÌ¸§
+int flag = 0, choice = 0, i = 0; // íŒŒì¼ ì½ê¸° ì„±ê³µì—¬ë¶€ í”Œë˜ê·¸, í”„ë¡œê·¸ë¨ ë™ì‘ choiceë³€ìˆ˜, êµ¬ì¡°ì²´ ë°°ì—´ì— ì ‘ê·¼í•˜ê¸° ìœ„í•œ ì¸ë±ìŠ¤ ë³€ìˆ˜
+char file_name[20] = { 0, }; // íŒŒì¼ ì´ë¦„
 
 int string_compare(char*, char*);
-// ¼­Àû Á¤º¸¸¦ ÀúÀåÇÏ´Â ÀÚ·á±¸Á¶
+// ì„œì  ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” ìë£Œêµ¬ì¡°
 typedef struct books {
-	char title[30]; // Ã¥ ÀÌ¸§
-	int qty; // ¾ç
-	double price; // °¡°İ
+	char title[30]; // ì±… ì´ë¦„
+	int qty; // ì–‘
+	double price; // ê°€ê²©
 	struct books* link;
 }library;
 
-// ÀúÀÚ Á¤º¸¸¦ ÀúÀåÇÏ´Â ÀÚ·á±¸Á¶
+// ì €ì ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” ìë£Œêµ¬ì¡°
 typedef struct Inventory {
-	char last_name[20]; // ¼º
-	char first_name[20]; // ÀÌ¸§
-	struct books *head; // ¼­Àû Á¤º¸ ÁÖ¼Ò ÀúÀå
+	char last_name[20]; // ì„±
+	char first_name[20]; // ì´ë¦„
+	struct books *head; // ì„œì  ì •ë³´ ì£¼ì†Œ ì €ì¥
 }theInventory;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/////////////////////////////// »ç¿ëÀÚ Ãß°¡ ÇÔ¼ö///////////////////////////////
+/////////////////////////////// ì‚¬ìš©ì ì¶”ê°€ í•¨ìˆ˜///////////////////////////////
 
-// ÆÄÀÏ¿¡¼­ ÀĞ¾î¿Â µ¥ÀÌÅÍ¸¦ ´Ü¼ø¿¬°á¸®½ºÆ®·Î ¸¸µë
+// íŒŒì¼ì—ì„œ ì½ì–´ì˜¨ ë°ì´í„°ë¥¼ ë‹¨ìˆœì—°ê²°ë¦¬ìŠ¤íŠ¸ë¡œ ë§Œë“¬
 void makeInventoryList(theInventory* Inven, char* last_name, char* first_name, char* book_title, int qty, double price) {
 	library* last_book;
 	library* new_book = (library*)malloc(sizeof(library));
 	for (int check = 0; check < i; check++)
 	{
-		if (strcmp(Inven[check].last_name, last_name) == 0 && strcmp(Inven[check].first_name, first_name) == 0) // ¹è¿­¿¡ ÀúÀÚ¸íÀÌ °°Àº ÀúÀÚ°¡ Á¸ÀçÇÑ´Ù¸é ¹è¿­¿¡ ÇÒ´çX ¹× ¼­Àû Á¤º¸ ¿¬°á
+		if (strcmp(Inven[check].last_name, last_name) == 0 && strcmp(Inven[check].first_name, first_name) == 0) // ë°°ì—´ì— ì €ìëª…ì´ ê°™ì€ ì €ìê°€ ì¡´ì¬í•œë‹¤ë©´ ë°°ì—´ì— í• ë‹¹X ë° ì„œì  ì •ë³´ ì—°ê²°
 		{
 			strcpy(new_book->title, book_title);
 			new_book->qty = qty;
@@ -48,7 +48,7 @@ void makeInventoryList(theInventory* Inven, char* last_name, char* first_name, c
 		}
 	}
 
-	// °°Àº ÀúÀÚ°¡ Á¸ÀçÇÏÁö ¾Ê´Â´Ù¸é ¹è¿­¿¡ »õ·Î ÇÒ´çÇÏ°í ¼­Àû Á¤º¸ ¿¬°á
+	// ê°™ì€ ì €ìê°€ ì¡´ì¬í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´ ë°°ì—´ì— ìƒˆë¡œ í• ë‹¹í•˜ê³  ì„œì  ì •ë³´ ì—°ê²°
 	strcpy(Inven[i].last_name, last_name);
 	strcpy(Inven[i].first_name, first_name);
 	strcpy(new_book->title, book_title);
@@ -59,7 +59,7 @@ void makeInventoryList(theInventory* Inven, char* last_name, char* first_name, c
 	i++;
 }
 
-// ¹öºíÁ¤·Ä
+// ë²„ë¸”ì •ë ¬
 void bubble_sort(char** title_array, int * qty_array, double * price_array, int title_cnt2)
 {
 	char tmp_title[30] = {0, };
@@ -70,7 +70,7 @@ void bubble_sort(char** title_array, int * qty_array, double * price_array, int 
 	{
 		for (int b = 0; b < a; b++)
 		{
-			if (strcmp(title_array[b], title_array[b + 1]) > 0) // title_array[b]°¡ title_array[b+1]º¸´Ù ÀÛ´Ù¸é
+			if (strcmp(title_array[b], title_array[b + 1]) > 0) // title_array[b]ê°€ title_array[b+1]ë³´ë‹¤ ì‘ë‹¤ë©´
 			{
 				strcpy(tmp_title, title_array[b]);
 				tmp_qty = qty_array[b];
@@ -100,53 +100,53 @@ void bubble_sort(char** title_array, int * qty_array, double * price_array, int 
 ///////////////////////////////////////////////////////////////////////////////
 
 
-// ÇÁ·Î±×·¥ ½ÃÀÛ ¹®±¸ Ãâ·Â
+// í”„ë¡œê·¸ë¨ ì‹œì‘ ë¬¸êµ¬ ì¶œë ¥
 void greeting() {
 	printf("Welome to the book store program!\n");
 }
 
-// ÆÄÀÏ¿¡¼­ ÀĞ¾î¼­ ÀÚ·á±¸Á¶¿¡ ÇÒ´çÇÏ´Â ÇÔ¼ö
+// íŒŒì¼ì—ì„œ ì½ì–´ì„œ ìë£Œêµ¬ì¡°ì— í• ë‹¹í•˜ëŠ” í•¨ìˆ˜
 void readDatabase(theInventory* Inven) {
-	char buffer[100] = { 0, }; // ÆÄÀÏ¿¡¼­ ÇÑÁÙ ¾¿ ÀĞ¾î¿À±âÀ§ÇÑ ¹öÆÛ
-	char* ptr = NULL; // ¹®ÀÚ¿­À» ÄŞ¸¶·Î ±¸ºĞÇÏ±â À§ÇÑ Æ÷ÀÎÅÍ º¯¼ö
+	char buffer[100] = { 0, }; // íŒŒì¼ì—ì„œ í•œì¤„ ì”© ì½ì–´ì˜¤ê¸°ìœ„í•œ ë²„í¼
+	char* ptr = NULL; // ë¬¸ìì—´ì„ ì½¤ë§ˆë¡œ êµ¬ë¶„í•˜ê¸° ìœ„í•œ í¬ì¸í„° ë³€ìˆ˜
 
-	char temp_last_name[20] = { 0, }; // ÀúÀÚ ÀÌ¸§ ÀÓ½ÃÀúÀå º¯¼ö
-	char temp_first_name[20] = { 0, }; // ÀúÀÚ ¼º ÀÓ½ÃÀúÀå º¯¼ö
-	char temp_book_title[30] = { 0, }; // Ã¥ Á¦¸ñ ÀÓ½ÃÀúÀå º¯¼ö
-	int temp_qty = 0; // Ã¥ ¼ö·® ÀÓ½ÃÀúÀå º¯¼ö
-	double temp_price = 0.0; // Ã¥ °¡°İ ÀÓ½ÃÀúÀå º¯¼ö
+	char temp_last_name[20] = { 0, }; // ì €ì ì´ë¦„ ì„ì‹œì €ì¥ ë³€ìˆ˜
+	char temp_first_name[20] = { 0, }; // ì €ì ì„± ì„ì‹œì €ì¥ ë³€ìˆ˜
+	char temp_book_title[30] = { 0, }; // ì±… ì œëª© ì„ì‹œì €ì¥ ë³€ìˆ˜
+	int temp_qty = 0; // ì±… ìˆ˜ëŸ‰ ì„ì‹œì €ì¥ ë³€ìˆ˜
+	double temp_price = 0.0; // ì±… ê°€ê²© ì„ì‹œì €ì¥ ë³€ìˆ˜
 
 	int cnt = 0;
 	FILE* file;
 
 	printf("Enter the name of the file: ");
-	scanf("%s", file_name); // ÆÄÀÏ ÀÌ¸§ ÀÔ·Â ¹Ş±â
-	file = fopen(file_name, "r"); // ÆÄÀÏ ÀĞ±â¸ğµå ½ÇÇà
+	scanf("%s", file_name); // íŒŒì¼ ì´ë¦„ ì…ë ¥ ë°›ê¸°
+	file = fopen(file_name, "r"); // íŒŒì¼ ì½ê¸°ëª¨ë“œ ì‹¤í–‰
 
 	while (file == NULL)
 	{
 		printf("Error: reading Database\n");
 		printf("Enter the name of the file: ");
-		scanf("%s", file_name); // ÆÄÀÏ ÀÌ¸§ ÀÔ·Â ¹Ş±â
-		file = fopen(file_name, "r"); // ÆÄÀÏ ÀĞ±â¸ğµå ½ÇÇà
-		while (getchar() != '\n'); // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+		scanf("%s", file_name); // íŒŒì¼ ì´ë¦„ ì…ë ¥ ë°›ê¸°
+		file = fopen(file_name, "r"); // íŒŒì¼ ì½ê¸°ëª¨ë“œ ì‹¤í–‰
+		while (getchar() != '\n'); // ì…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
 		flag = 0;
 	}
 
 	for (int j = 0; j < 50; j++)
 	{
-		Inven[j].head = NULL; // ±¸Á¶Ã¼ ¹è¿­ÀÇ head¸¦ ¸ğµÎ NULL·Î ÃÊ±âÈ­ÇÏ°í ½ÃÀÛ
+		Inven[j].head = NULL; // êµ¬ì¡°ì²´ ë°°ì—´ì˜ headë¥¼ ëª¨ë‘ NULLë¡œ ì´ˆê¸°í™”í•˜ê³  ì‹œì‘
 	}
 
-	while (fgets(buffer, sizeof(buffer), file) != NULL) // ÆÄÀÏ ÇÑÁÙ ¾¿ ÀĞ¾î¿À±â
+	while (fgets(buffer, sizeof(buffer), file) != NULL) // íŒŒì¼ í•œì¤„ ì”© ì½ì–´ì˜¤ê¸°
 	{
 		memset(temp_last_name, '\0', sizeof(temp_last_name));
 		memset(temp_first_name, '\0', sizeof(temp_first_name));
 		memset(temp_book_title, '\0', sizeof(temp_book_title));
 
-		ptr = strtok(buffer, ","); // ¹öÆÛ¿¡¼­ ¹Ş¾Æ¿Â ÆÄÀÏ ÇÑÁÙÀ» ÄŞ¸¶ ±âÁØÀ¸·Î ¹®ÀÚ¿­ ÀÚ¸£±â
+		ptr = strtok(buffer, ","); // ë²„í¼ì—ì„œ ë°›ì•„ì˜¨ íŒŒì¼ í•œì¤„ì„ ì½¤ë§ˆ ê¸°ì¤€ìœ¼ë¡œ ë¬¸ìì—´ ìë¥´ê¸°
 
-		while (ptr != NULL) // ÄŞ¸¶ ±âÁØÀ¸·Î ¹®ÀÚ¿­ ÀÚ¸£´Â ¹İº¹¹®
+		while (ptr != NULL) // ì½¤ë§ˆ ê¸°ì¤€ìœ¼ë¡œ ë¬¸ìì—´ ìë¥´ëŠ” ë°˜ë³µë¬¸
 		{
 			if (cnt == 0)
 			{
@@ -172,9 +172,9 @@ void readDatabase(theInventory* Inven) {
 				temp_price = atof(ptr);
 			}
 
-			ptr = strtok(NULL, ",");  // ´ÙÀ½ ¹®ÀÚ¿­À» Àß¶ó¼­ Æ÷ÀÎÅÍ ¹İÈ¯
+			ptr = strtok(NULL, ",");  // ë‹¤ìŒ ë¬¸ìì—´ì„ ì˜ë¼ì„œ í¬ì¸í„° ë°˜í™˜
 			cnt++;
-			if (cnt == 5) cnt = 0; // ÄŞ¸¶ ±âÁØÀ¸·Î ±¸ºĞ ¿Ï·á
+			if (cnt == 5) cnt = 0; // ì½¤ë§ˆ ê¸°ì¤€ìœ¼ë¡œ êµ¬ë¶„ ì™„ë£Œ
 		}
 		makeInventoryList(Inven, temp_last_name, temp_first_name, temp_book_title, temp_qty, temp_price);
 	}
@@ -182,7 +182,7 @@ void readDatabase(theInventory* Inven) {
 	fclose(file);
 }
 
-// ¸Ş´º Ãâ·Â
+// ë©”ë‰´ ì¶œë ¥
 int printMenu() {
 	int check = 0;
 	printf("\n");
@@ -198,20 +198,20 @@ int printMenu() {
 	printf("Enter 8 to exit\n");
 	printf("Enter your choice: ");
 
-	while (scanf("%d", &choice) == 0 || choice < 0) // Á¤¼ö¸¸ ÀÔ·Â ¹ŞÀ½
+	while (scanf("%d", &choice) == 0 || choice < 0) // ì •ìˆ˜ë§Œ ì…ë ¥ ë°›ìŒ
 	{
 		printf("Error: Invalida Choice\n");
 		printf("Enter your choice: ");
-		while (getchar() != '\n'); // ¹öÆÛ ÃÊ±âÈ­
+		while (getchar() != '\n'); // ë²„í¼ ì´ˆê¸°í™”
 	}
 	return choice;
 }
 
-// µ¥ÀÌÅÍº£ÀÌ½º Ãâ·Â
+// ë°ì´í„°ë² ì´ìŠ¤ ì¶œë ¥
 void displayOrigianlInventory(theInventory* Inven) {
 	library* p = NULL;
 
-	for (int j = 0; j < i; j++) // reverseÇÔ¼ö
+	for (int j = 0; j < i; j++)
 	{
 		p = Inven[j].head;
 
@@ -231,7 +231,7 @@ void displayOrigianlInventory(theInventory* Inven) {
 }
 
 void displayAuthorsWork(theInventory* Inven) {
-	library* ptr; // library headÁ¤º¸¸¦ ÀúÀåÇÒ º¯¼ö 
+	library* ptr; // library headì •ë³´ë¥¼ ì €ì¥í•  ë³€ìˆ˜ 
 	char last_name[20] = { 0, };
 	char first_name[20] = { 0, };
 
@@ -248,10 +248,10 @@ void displayAuthorsWork(theInventory* Inven) {
 	_strlwr(last_name);
 	last_name[0] -= 32;
 
-	for (int j = 0; j < i; j++) // ÀÌ¹Ì Á¸ÀçÇÏ´Â Á¤º¸ÀÎÁö Å½»ö
+	for (int j = 0; j < i; j++) // ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì •ë³´ì¸ì§€ íƒìƒ‰
 	{
 		ptr = Inven[j].head;
-		if (strcmp(Inven[j].last_name, last_name) == 0 && strcmp(Inven[j].first_name, first_name) == 0) // ÀúÀÚ¸í ÀÏÄ¡
+		if (strcmp(Inven[j].last_name, last_name) == 0 && strcmp(Inven[j].first_name, first_name) == 0) // ì €ìëª… ì¼ì¹˜
 		{
 			while (ptr != NULL)
 			{
@@ -259,30 +259,30 @@ void displayAuthorsWork(theInventory* Inven) {
 				ptr = ptr->link;
 			}
 			
-			ptr = Inven[j].head; // Æ÷ÀÎÅÍ Çìµå·Î ÃÊ±âÈ­
-			char** title_array = (char *)malloc(sizeof(char *) * title_cnt); // ¹®ÀÚ¿­ ¹è¿­ ¼±¾ğ
+			ptr = Inven[j].head; // í¬ì¸í„° í—¤ë“œë¡œ ì´ˆê¸°í™”
+			char** title_array = (char *)malloc(sizeof(char *) * title_cnt); // ë¬¸ìì—´ ë°°ì—´ ì„ ì–¸
 			for (int cnt = 0; cnt < title_cnt; cnt++)
 			{
-				title_array[cnt] = (char*)malloc(sizeof(char) * 30); // ¹®ÀÚ¿­À» ÃÖ´ë 30¸¸Å­ ¹Ş¾Æ¿Àµµ·Ï µ¿ÀûÇÒ´ç
+				title_array[cnt] = (char*)malloc(sizeof(char) * 30); // ë¬¸ìì—´ì„ ìµœëŒ€ 30ë§Œí¼ ë°›ì•„ì˜¤ë„ë¡ ë™ì í• ë‹¹
 			}
 			
-			int *qty_array = (int*)malloc(sizeof(int) * title_cnt); // ¼ö·®À» ÀúÀåÇÒ ¹è¿­ ¼±¾ğ
-			double* price_array = (double*)malloc(sizeof(double) * title_cnt); // °¡°İÀ» ÀúÀåÇÒ ¹è¿­ ¼±¾ğ
+			int *qty_array = (int*)malloc(sizeof(int) * title_cnt); // ìˆ˜ëŸ‰ì„ ì €ì¥í•  ë°°ì—´ ì„ ì–¸
+			double* price_array = (double*)malloc(sizeof(double) * title_cnt); // ê°€ê²©ì„ ì €ì¥í•  ë°°ì—´ ì„ ì–¸
 
 			while (ptr != NULL)
 			{
-				title_array[title_cnt2] = ptr->title; // ¹®ÀÚ¿­ ¹è¿­¿¡ Ã¥ Á¦¸ñ ÇÒ´ç
+				title_array[title_cnt2] = ptr->title; // ë¬¸ìì—´ ë°°ì—´ì— ì±… ì œëª© í• ë‹¹
 				qty_array[title_cnt2] = ptr->qty;
 				price_array[title_cnt2] = ptr->price;
 				ptr = ptr->link;
 				title_cnt2++;
 			}
-			bubble_sort(title_array, qty_array, price_array, title_cnt2); // ¹öºíÁ¤·Ä
+			bubble_sort(title_array, qty_array, price_array, title_cnt2); // ë²„ë¸”ì •ë ¬
 			return;
 		}
 		else
 		{
-			if (j == i - 1) // ÀÎµ¦½º ³¡±îÁö Å½»öÇßÀ½¿¡µµ ÀÏÄ¡ÇÏ´Â ÀúÀÚ¸íÀÌ ¾ø´Ù¸é ¿¡·¯ Ãâ·Â
+			if (j == i - 1) // ì¸ë±ìŠ¤ ëê¹Œì§€ íƒìƒ‰í–ˆìŒì—ë„ ì¼ì¹˜í•˜ëŠ” ì €ìëª…ì´ ì—†ë‹¤ë©´ ì—ëŸ¬ ì¶œë ¥
 			{
 				printf("Sorry, but no books by %s, %s in the inventory\n", last_name, first_name);
 				return;
@@ -301,26 +301,26 @@ void addBook(theInventory* Inven) {
 	int qty = 0;
 	
 	double price = 0;
-	char f_price[10] = {0, }; // price¸¦ ¹®ÀÚ¿­·Î ÀÔ·Â¹ŞÀº ÈÄ atof()·Î ½Ç¼ö·Î º¯°æÇÏ±â À§ÇÑ º¯¼ö
-	char f_qty[10] = { 0, };// qty¸¦ ¹®ÀÚ¿­·Î ÀÔ·Â¹ŞÀº ÈÄ atof()·Î ½Ç¼ö·Î º¯°æÇÏ±â À§ÇÑ º¯¼ö
+	char f_price[10] = {0, }; // priceë¥¼ ë¬¸ìì—´ë¡œ ì…ë ¥ë°›ì€ í›„ atof()ë¡œ ì‹¤ìˆ˜ë¡œ ë³€ê²½í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
+	char f_qty[10] = { 0, };// qtyë¥¼ ë¬¸ìì—´ë¡œ ì…ë ¥ë°›ì€ í›„ atof()ë¡œ ì‹¤ìˆ˜ë¡œ ë³€ê²½í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
 
 	printf("Enter the author's first name: ");
 	scanf("%s", first_name);
 	_strlwr(first_name);
-	first_name[0] -= 32; // Ã¹¹øÂ° ¹®ÀÚ ´ë¹®ÀÚ·Î º¯°æ
+	first_name[0] -= 32; // ì²«ë²ˆì§¸ ë¬¸ì ëŒ€ë¬¸ìë¡œ ë³€ê²½
 
 	printf("Enter the author's last name: ");
 	scanf("%s", last_name);
 	_strlwr(last_name);
-	last_name[0] -= 32; // Ã¹¹øÂ° ¹®ÀÚ ´ë¹®ÀÚ·Î º¯°æ
+	last_name[0] -= 32; // ì²«ë²ˆì§¸ ë¬¸ì ëŒ€ë¬¸ìë¡œ ë³€ê²½
 
 
-	while (getchar() != '\n'); // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+	while (getchar() != '\n'); // ì…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
 	printf("Enter the title: ");
 	scanf("%[^\n]s", title);
 	_strlwr(title);
-	title[0] -= 32; // °¡Àå Ã¹¹øÂ° ¹®ÀÚ ´ë¹®ÀÚ·Î º¯°æ
-	for (int k = 0; k < strlen(title); k++) // °ø¹é µÚ¿¡ Á¸ÀçÇÑ ¹®ÀÚµéÀ» ´ë¹®ÀÚ·Î º¯°æÇÏ´Â ¹İº¹¹®
+	title[0] -= 32; // ê°€ì¥ ì²«ë²ˆì§¸ ë¬¸ì ëŒ€ë¬¸ìë¡œ ë³€ê²½
+	for (int k = 0; k < strlen(title); k++) // ê³µë°± ë’¤ì— ì¡´ì¬í•œ ë¬¸ìë“¤ì„ ëŒ€ë¬¸ìë¡œ ë³€ê²½í•˜ëŠ” ë°˜ë³µë¬¸
 	{
 		if (isspace(title[k]) && k != 0 && k != strlen(title) - 1)
 		{
@@ -328,7 +328,7 @@ void addBook(theInventory* Inven) {
 		}
 	}
 
-	for (int j = 0; j < i; j++) // ÀÌ¹Ì Á¸ÀçÇÏ´Â Á¤º¸ÀÎÁö °Ë»ç
+	for (int j = 0; j < i; j++) // ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì •ë³´ì¸ì§€ ê²€ì‚¬
 	{
 		ptr = Inven[j].head;
 		if (strcmp(Inven[j].last_name, last_name) == 0 && strcmp(Inven[j].first_name, first_name) == 0)
@@ -348,11 +348,11 @@ void addBook(theInventory* Inven) {
 	printf("Enter the qty: ");
 	scanf("%s", f_qty);
 	qty = atoi(f_qty);
-	while (strlen(f_qty) != 1 || qty < 0) // 0°ú ¾çÀÇ Á¤¼ö¸¸ ÀÔ·Â ¹Ş±â
+	while (strlen(f_qty) != 1 || qty < 0) // 0ê³¼ ì–‘ì˜ ì •ìˆ˜ë§Œ ì…ë ¥ ë°›ê¸°
 	{
 		printf("Invalid input for qty\n");
 		printf("Enter the qty: ");
-		while (getchar() != '\n'); // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+		while (getchar() != '\n'); // ì…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
 		scanf("%s", f_qty);
 		qty = atoi(f_qty);
 	}
@@ -364,40 +364,40 @@ void addBook(theInventory* Inven) {
 	{
 		printf("Invalid input for price\n");
 		printf("Enter the price: ");
-		while (getchar() != '\n'); // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+		while (getchar() != '\n'); // ì…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
 		scanf("%s", f_price);
 		price = atof(f_price);
 	}
 
-	makeInventoryList(Inven, last_name, first_name, title, qty, price); // Á¸ÀçÇÏÁö ¾Ê´Â Á¤º¸¶ó¸é ÀÎº¥Åä¸® ¾÷µ¥ÀÌÆ®
+	makeInventoryList(Inven, last_name, first_name, title, qty, price); // ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ì •ë³´ë¼ë©´ ì¸ë²¤í† ë¦¬ ì—…ë°ì´íŠ¸
 }
 
 void changePrice(theInventory* Inven) {
-	library* ptr = NULL; // ¼­Àû ¸®½ºÆ®ÀÇ Çìµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ º¯¼ö
+	library* ptr = NULL; // ì„œì  ë¦¬ìŠ¤íŠ¸ì˜ í—¤ë“œë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„° ë³€ìˆ˜
 
 	char first_name[20] = { 0, };
 	char last_name[20] = { 0, };
 	char title[20] = { 0, };
 
 	double price = 0;
-	char f_price[10] = { 0, }; // price¸¦ ¹®ÀÚ¿­·Î ÀÔ·Â¹ŞÀº ÈÄ atof()·Î ½Ç¼ö·Î º¯°æÇÏ±â À§ÇÑ º¯¼ö
+	char f_price[10] = { 0, }; // priceë¥¼ ë¬¸ìì—´ë¡œ ì…ë ¥ë°›ì€ í›„ atof()ë¡œ ì‹¤ìˆ˜ë¡œ ë³€ê²½í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
 
 	int find_title_flag = 0;
 	int res;
 
-	// ÀúÀÚ ÆÛ½ºÆ® ³×ÀÓ µ¥ÀÌÅÍ Ã³¸®
+	// ì €ì í¼ìŠ¤íŠ¸ ë„¤ì„ ë°ì´í„° ì²˜ë¦¬
 	printf("Enter the author's first name: ");
 	scanf("%s", first_name);
 	_strlwr(first_name);
-	first_name[0] -= 32; // Ã¹¹øÂ° ¹®ÀÚ ´ë¹®ÀÚ·Î º¯°æ
+	first_name[0] -= 32; // ì²«ë²ˆì§¸ ë¬¸ì ëŒ€ë¬¸ìë¡œ ë³€ê²½
 
-	// ÀúÀÚ ¶ó½ºÆ® ³×ÀÓ µ¥ÀÌÅÍ Ã³¸®
+	// ì €ì ë¼ìŠ¤íŠ¸ ë„¤ì„ ë°ì´í„° ì²˜ë¦¬
 	printf("Enter the author's last name: ");
 	scanf("%s", last_name);
 	_strlwr(last_name);
-	last_name[0] -= 32; // Ã¹¹øÂ° ¹®ÀÚ ´ë¹®ÀÚ·Î º¯°æ
+	last_name[0] -= 32; // ì²«ë²ˆì§¸ ë¬¸ì ëŒ€ë¬¸ìë¡œ ë³€ê²½
 
-	// ÀÌ¹Ì Á¸ÀçÇÏ´Â ÀúÀÚ Á¤º¸ÀÎÁö °Ë»ç
+	// ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì €ì ì •ë³´ì¸ì§€ ê²€ì‚¬
 	for (int j = 0; j < i; j++)
 	{
 		if (strcmp(Inven[j].last_name, last_name) == 0 && strcmp(Inven[j].first_name, first_name) == 0)
@@ -406,7 +406,7 @@ void changePrice(theInventory* Inven) {
 		}
 		else
 		{
-			if (j == i - 1) // ¹İº¹¹®À» ³¡±îÁö Å½»öÇßÀ½¿¡µµ ÀúÀÚ°¡ ¾ø´Ù¸é ¿¡·¯ Ãâ·Â
+			if (j == i - 1) // ë°˜ë³µë¬¸ì„ ëê¹Œì§€ íƒìƒ‰í–ˆìŒì—ë„ ì €ìê°€ ì—†ë‹¤ë©´ ì—ëŸ¬ ì¶œë ¥
 			{
 				printf("No such author in your database. So you cannot change the price\n");
 				return;
@@ -414,7 +414,7 @@ void changePrice(theInventory* Inven) {
 		}
 	}
 
-	// Ã¥ Á¸ÀçÇÏ´ÂÁö Å½»ö
+	// ì±… ì¡´ì¬í•˜ëŠ”ì§€ íƒìƒ‰
 	for (int j = 0; j < i; j++)
 	{
 		ptr = Inven[j].head;
@@ -437,12 +437,12 @@ void changePrice(theInventory* Inven) {
 		}
 	}
 
-	// Ã¥ Á¦¸ñ ÀÔ·Â µ¥ÀÌÅÍ Ã³¸®
-	while (getchar() != '\n'); // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+	// ì±… ì œëª© ì…ë ¥ ë°ì´í„° ì²˜ë¦¬
+	while (getchar() != '\n'); // ì…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
 	printf("Enter the title: ");
-	scanf("%[^\n]s", title); // °ø¹é Æ÷ÇÔÇØ¼­ ÀÔ·Â ¹Ş±â
-	title[0] -= 32; // °¡Àå Ã¹¹øÂ° ¹®ÀÚ ´ë¹®ÀÚ·Î º¯°æ
-	for (int k = 0; k < strlen(title); k++) // °ø¹é ±âÁØ µÚ¿¡ Á¸ÀçÇÑ ¹®ÀÚµéÀ» ´ë¹®ÀÚ·Î º¯°æÇÏ´Â ¹İº¹¹®
+	scanf("%[^\n]s", title); // ê³µë°± í¬í•¨í•´ì„œ ì…ë ¥ ë°›ê¸°
+	title[0] -= 32; // ê°€ì¥ ì²«ë²ˆì§¸ ë¬¸ì ëŒ€ë¬¸ìë¡œ ë³€ê²½
+	for (int k = 0; k < strlen(title); k++) // ê³µë°± ê¸°ì¤€ ë’¤ì— ì¡´ì¬í•œ ë¬¸ìë“¤ì„ ëŒ€ë¬¸ìë¡œ ë³€ê²½í•˜ëŠ” ë°˜ë³µë¬¸
 	{
 		if (isspace(title[k]) && k != 0 && k != strlen(title) - 1)
 		{
@@ -450,7 +450,7 @@ void changePrice(theInventory* Inven) {
 		}
 	}
 
-	// Ã¥ °¡°İ ÀÔ·Â µ¥ÀÌÅÍ Ã³¸®
+	// ì±… ê°€ê²© ì…ë ¥ ë°ì´í„° ì²˜ë¦¬
 	printf("Enter the price: ");
 	scanf("%s", f_price);
 	price = atof(f_price);
@@ -458,12 +458,12 @@ void changePrice(theInventory* Inven) {
 	{
 		printf("Invalid input for price\n");
 		printf("Enter the price: ");
-		while (getchar() != '\n'); // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+		while (getchar() != '\n'); // ì…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
 		scanf("%s", f_price);
 		price = atof(f_price);
 	}
 
-	// Ã¥ °¡°İ º¯°æÇÏ±â À§ÇØ Å½»ö
+	// ì±… ê°€ê²© ë³€ê²½í•˜ê¸° ìœ„í•´ íƒìƒ‰
 	for (int j = 0; j < i; j++)
 	{
 		ptr = Inven[j].head;
@@ -485,26 +485,26 @@ void changePrice(theInventory* Inven) {
 }
 
 void changeQty(theInventory* Inven) {
-	library* ptr = NULL; // ¼­Àû ¸®½ºÆ®ÀÇ Çìµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ º¯¼ö
+	library* ptr = NULL; // ì„œì  ë¦¬ìŠ¤íŠ¸ì˜ í—¤ë“œë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„° ë³€ìˆ˜
 
 	char first_name[20] = { 0, };
 	char last_name[20] = { 0, };
 	char title[30] = { 0, };
 	int qty = 0;
 
-	// ÀúÀÚ ÆÛ½ºÆ® ³×ÀÓ µ¥ÀÌÅÍ Ã³¸®
+	// ì €ì í¼ìŠ¤íŠ¸ ë„¤ì„ ë°ì´í„° ì²˜ë¦¬
 	printf("Enter the author's first name: ");
 	scanf("%s", first_name);
 	_strlwr(first_name);
-	first_name[0] -= 32; // Ã¹¹øÂ° ¹®ÀÚ ´ë¹®ÀÚ·Î º¯°æ
+	first_name[0] -= 32; // ì²«ë²ˆì§¸ ë¬¸ì ëŒ€ë¬¸ìë¡œ ë³€ê²½
 
-	// ÀúÀÚ ¶ó½ºÆ® ³×ÀÓ µ¥ÀÌÅÍ Ã³¸®
+	// ì €ì ë¼ìŠ¤íŠ¸ ë„¤ì„ ë°ì´í„° ì²˜ë¦¬
 	printf("Enter the author's last name: ");
 	scanf("%s", last_name);
 	_strlwr(last_name);
-	last_name[0] -= 32; // Ã¹¹øÂ° ¹®ÀÚ ´ë¹®ÀÚ·Î º¯°æ
+	last_name[0] -= 32; // ì²«ë²ˆì§¸ ë¬¸ì ëŒ€ë¬¸ìë¡œ ë³€ê²½
 
-	// ÀÌ¹Ì Á¸ÀçÇÏ´Â ÀúÀÚ Á¤º¸ÀÎÁö °Ë»ç
+	// ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì €ì ì •ë³´ì¸ì§€ ê²€ì‚¬
 	for (int j = 0; j < i; j++)
 	{
 		if (strcmp(Inven[j].last_name, last_name) == 0 && strcmp(Inven[j].first_name, first_name) == 0)
@@ -513,7 +513,7 @@ void changeQty(theInventory* Inven) {
 		}
 		else
 		{
-			if (j == i - 1) // ¹İº¹¹®À» ³¡±îÁö Å½»öÇßÀ½¿¡µµ ÀúÀÚ°¡ ¾ø´Ù¸é ¿¡·¯ Ãâ·Â
+			if (j == i - 1) // ë°˜ë³µë¬¸ì„ ëê¹Œì§€ íƒìƒ‰í–ˆìŒì—ë„ ì €ìê°€ ì—†ë‹¤ë©´ ì—ëŸ¬ ì¶œë ¥
 			{
 				printf("No such author in your database. So you cannot change the qty\n");
 				return;
@@ -521,12 +521,12 @@ void changeQty(theInventory* Inven) {
 		}
 	}
 
-	// Ã¥ Á¦¸ñ ÀÔ·Â µ¥ÀÌÅÍ Ã³¸®
-	while (getchar() != '\n'); // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+	// ì±… ì œëª© ì…ë ¥ ë°ì´í„° ì²˜ë¦¬
+	while (getchar() != '\n'); // ì…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
 	printf("Enter the title: ");
-	scanf("%[^\n]s", title); // °ø¹é Æ÷ÇÔÇØ¼­ ÀÔ·Â ¹Ş±â
-	title[0] -= 32; // °¡Àå Ã¹¹øÂ° ¹®ÀÚ ´ë¹®ÀÚ·Î º¯°æ
-	for (int k = 0; k < strlen(title); k++) // °ø¹é ±âÁØ µÚ¿¡ Á¸ÀçÇÑ ¹®ÀÚµéÀ» ´ë¹®ÀÚ·Î º¯°æÇÏ´Â ¹İº¹¹®
+	scanf("%[^\n]s", title); // ê³µë°± í¬í•¨í•´ì„œ ì…ë ¥ ë°›ê¸°
+	title[0] -= 32; // ê°€ì¥ ì²«ë²ˆì§¸ ë¬¸ì ëŒ€ë¬¸ìë¡œ ë³€ê²½
+	for (int k = 0; k < strlen(title); k++) // ê³µë°± ê¸°ì¤€ ë’¤ì— ì¡´ì¬í•œ ë¬¸ìë“¤ì„ ëŒ€ë¬¸ìë¡œ ë³€ê²½í•˜ëŠ” ë°˜ë³µë¬¸
 	{
 		if (isspace(title[k]) && k != 0 && k != strlen(title) - 1)
 		{
@@ -535,14 +535,14 @@ void changeQty(theInventory* Inven) {
 	}
 
 	printf("Enter the qty: ");
-	while (scanf("%d", &qty) != 1 || qty < 0) // 0°ú ¾çÀÇ Á¤¼ö¸¸ ÀÔ·Â ¹Ş±â
+	while (scanf("%d", &qty) != 1 || qty < 0) // 0ê³¼ ì–‘ì˜ ì •ìˆ˜ë§Œ ì…ë ¥ ë°›ê¸°
 	{
 		printf("Invalid input for qty\n");
 		printf("Enter the qty: ");
-		while (getchar() != '\n'); // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+		while (getchar() != '\n'); // ì…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
 	}
 
-	// Ã¥ ¼ö·® º¯°æÇÏ±â À§ÇØ Å½»ö
+	// ì±… ìˆ˜ëŸ‰ ë³€ê²½í•˜ê¸° ìœ„í•´ íƒìƒ‰
 	for (int j = 0; j < i; j++)
 	{
 		ptr = Inven[j].head;
@@ -565,7 +565,7 @@ void changeQty(theInventory* Inven) {
 void totalQty(theInventory *Inven) {
 	library* ptr = NULL;
 	int total = 0;
-	for (int j = 0; j < i; j++) // µ¥ÀÌÅÍº£ÀÌ½º Ãâ·Â¹®
+	for (int j = 0; j < i; j++)
 	{
 		ptr = Inven[j].head;
 		while (ptr != NULL)
@@ -580,7 +580,7 @@ void totalQty(theInventory *Inven) {
 void calculateTotalAmount(theInventory * Inven) {
 	library* ptr = NULL;
 	double total_amount = 0;
-	for (int j = 0; j < i; j++) // µ¥ÀÌÅÍº£ÀÌ½º Ãâ·Â¹®
+	for (int j = 0; j < i; j++)
 	{
 		ptr = Inven[j].head;
 		while (ptr != NULL)
@@ -593,8 +593,8 @@ void calculateTotalAmount(theInventory * Inven) {
 }
 
 int main() {	
-	theInventory Inven[50]; // ±¸Á¶Ã¼ ÀÏÂ÷¿ø ¹è¿­ »ı¼º
-	greeting(); // È¯¿µ ¹®±¸ Ãâ·Â
+	theInventory Inven[50]; // êµ¬ì¡°ì²´ ì¼ì°¨ì› ë°°ì—´ ìƒì„±
+	greeting(); // í™˜ì˜ ë¬¸êµ¬ ì¶œë ¥
 
 	readDatabase(Inven);
 
@@ -637,22 +637,4 @@ int main() {
 		}
 	}
 	return 0;
-}
-
-int string_comapre(char* a, char* b) // ¹®ÀÚ¿­ ºñ±³ ÇÔ¼ö
-{
-	int len_a = strlen(a);
-	int len_b = strlen(b);
-	int cmp_flag = 0;
-	if (strlen(len_a) == strlen(len_b))
-	{
-		for (int check = 0; check < strlen(a); a++)
-		{
-			if (a[check] == b[check])
-			{
-				cmp_flag = 1;
-			}
-		}
-	}
-	return cmp_flag;
 }
